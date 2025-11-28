@@ -9,9 +9,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeDto {
-    private Long id;
-    private String username;
-    private String email;
-    private Long salaryId;
+public class LoginDto {
+    private String usernameOrEmail;
+    private String password;
 }

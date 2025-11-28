@@ -11,14 +11,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "employees")
-public class Employee {
+@Table(name = "applications")
+public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String email;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "salaryId")
-    private Salary salary;
+    private int score;
+    private String resume;
+    @ManyToOne
+    private User user;
+    @ManyToOne
+    private Job job;
 }

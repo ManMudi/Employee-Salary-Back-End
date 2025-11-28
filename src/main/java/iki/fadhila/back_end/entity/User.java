@@ -6,25 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "users")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
     private String username;
     private String email;
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinTable(name = "users_roles",joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
+    private String name;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",joinColumns = @JoinColumn(name = "users",referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "roles",referencedColumnName = "id"))
     private Set<Role> roles;
 }

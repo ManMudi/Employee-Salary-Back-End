@@ -1,6 +1,5 @@
 package iki.fadhila.back_end.security;
 
-import iki.fadhila.back_end.Exception.ResourceNotFoundException;
 import iki.fadhila.back_end.entity.User;
 import iki.fadhila.back_end.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -16,17 +15,17 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class CustomUserDetails implements UserDetailsService {
+public class CustomerUserDetails implements UserDetailsService {
 
     private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        User user=userRepository.findByUsernameOrEmail(usernameOrEmail,usernameOrEmail)
-                .orElseThrow(()->new RuntimeException("Username Or Email Not Found !"));
+        User user=userRepository.findByUsernameOrEmail(usernameOrEmail,usernameOrEmail).orElseThrow(
+                () -> new RuntimeException("Username Or Email Not Found !"));
 
-        Set<GrantedAuthority> authorities=user.getRoles().stream().map(role ->
-                new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
+        Set<GrantedAuthority> authorities=user.getRoles().stream().map(
+                role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
 
         return new org.springframework.security.core.userdetails.User(
                 usernameOrEmail,

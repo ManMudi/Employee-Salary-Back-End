@@ -9,8 +9,10 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDto {
+public class ApplicationDto {
     private Long id;
-    private String name;
-
+    private int score;
+    private String resume;
+    private Long jobId;
+    private Long userId;
 }
