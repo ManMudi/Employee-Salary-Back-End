@@ -12,4 +12,5 @@ import lombok.Setter;
 public class JwtResponse {
     private String bearToken="Bearer Token";
     private String token;
+    private String role;
 }

@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,14 +34,12 @@ public class SpringConfig  {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((requests) -> {
-            requests.requestMatchers("/roles/**").permitAll();
-            requests.requestMatchers("/auth/**").permitAll();
-            requests.requestMatchers("/jobs/**").hasAnyRole("APPLICANT");
-            requests.requestMatchers("/applications/**").permitAll();
-            requests.requestMatchers("/users/**").hasAnyRole("APPLICANT");
+                    requests.requestMatchers("auth/**").permitAll();
+                    requests.requestMatchers("/profile/**").hasAnyRole("APPLICANT");
             requests.anyRequest().authenticated();
         });
         http.formLogin(Customizer.withDefaults());
