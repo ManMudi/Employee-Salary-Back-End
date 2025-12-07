@@ -1,5 +1,6 @@
 package iki.fadhila.back_end.service.impl;
 
+import iki.fadhila.back_end.dto.JwtResponse;
 import iki.fadhila.back_end.dto.LoginDto;
 import iki.fadhila.back_end.dto.UserDto;
 import iki.fadhila.back_end.entity.Role;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -46,12 +48,29 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(LoginDto loginDto) {
+    public JwtResponse login(LoginDto loginDto) {
         Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(),
                 loginDto.getPassword()
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtUtilsProvider.generateToken(authentication);
+        String token= jwtUtilsProvider.generateToken(authentication);
+
+        String role=null;
+        Optional<User> optionalUser=userRepository.findByUsernameOrEmail
+                (loginDto.getUsernameOrEmail(),loginDto.getUsernameOrEmail());
+        if(optionalUser.isPresent()){
+            User loggedInUser=optionalUser.get();
+            Optional<Role> optionalRole=loggedInUser.getRoles().stream().findFirst();
+            if(optionalRole.isPresent()){
+                Role role1=optionalRole.get();
+                role=role1.getName();
+            }
+        }
+
+        JwtResponse jwtResponse=new JwtResponse();
+        jwtResponse.setToken(token);
+        jwtResponse.setRole(role);
+        return jwtResponse;
     }
 }

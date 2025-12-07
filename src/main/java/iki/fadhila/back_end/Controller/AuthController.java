@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("auth")
+@CrossOrigin("*")
 public class AuthController {
 
     private AuthService authService;
@@ -24,9 +25,7 @@ public class AuthController {
 
     @PostMapping("login")
     public ResponseEntity<JwtResponse> login(@RequestBody LoginDto loginDto){
-        String token=authService.login(loginDto);
-        JwtResponse jwtResponse=new JwtResponse();
-        jwtResponse.setToken(token);
+        JwtResponse jwtResponse=authService.login(loginDto);
         return new ResponseEntity<>(jwtResponse,HttpStatus.OK);
     }
 }

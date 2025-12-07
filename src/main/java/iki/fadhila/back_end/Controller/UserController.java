@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("users")
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
 public class UserController {
 
     private UserService userService;

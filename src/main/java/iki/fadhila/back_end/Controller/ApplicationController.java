@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("applications")
+@CrossOrigin("*")
 public class ApplicationController {
 
     private ApplicationService applicationService;
